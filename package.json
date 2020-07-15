@@ -1,0 +1,17 @@
+{
+  "name": "cordova-plugin-amap-track",
+  "version": "1.0.0",
+  "description": "",
+  "cordova": {
+    "id": "cordova-plugin-amap-track",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "",
+  "license": "ISC"
+}
