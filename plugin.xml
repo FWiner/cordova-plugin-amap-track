@@ -12,5 +12,6 @@
       </feature>
     </config-file>
     <source-file src="src/ios/AmapTrack.m"/>
+    <source-file src="src/ios/AmapTrack.h"/>
   </platform>
 </plugin>

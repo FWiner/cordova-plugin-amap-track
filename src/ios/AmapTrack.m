@@ -1,5 +1,6 @@
 /********* AmapTrack.m Cordova Plugin Implementation *******/
 
+#import "AmapTrack.h"
 #import <Cordova/CDV.h>
 
 @implementation AmapTrack
