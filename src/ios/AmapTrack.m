@@ -2,6 +2,7 @@
 
 #import "AmapTrack.h"
 
+
 @implementation AmapTrack
 
 
@@ -15,25 +16,30 @@
 
 - (void)configLocationManager
 {
-    self.locationManager = [[AMapLocationManager alloc] init];
+    if(!self.locationManager){
+        self.locationManager = [[AMapLocationManager alloc] init];
+           
+           self.locationManager.delegate = self;
+           
+           //设置期望定位精度
+           [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+           
+           //设置不允许系统暂停定位
+           [self.locationManager setPausesLocationUpdatesAutomatically:NO];
+           
+           //设置允许在后台定位
+           [self.locationManager setAllowsBackgroundLocationUpdates:YES];
+           
+           //设置定位超时时间
+           [self.locationManager setLocationTimeout:2];
+           
+           //设置逆地理超时时间
+           [self.locationManager setReGeocodeTimeout:2];
+           
+           //设置开启虚拟定位风险监测，可以根据需要开启
+           [self.locationManager setDetectRiskOfFakeLocation:NO];
+    }
     
-    //设置期望定位精度
-    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
-    
-    //设置不允许系统暂停定位
-    [self.locationManager setPausesLocationUpdatesAutomatically:NO];
-    
-    //设置允许在后台定位
-    [self.locationManager setAllowsBackgroundLocationUpdates:YES];
-    
-    //设置定位超时时间
-    [self.locationManager setLocationTimeout:2];
-    
-    //设置逆地理超时时间
-    [self.locationManager setReGeocodeTimeout:2];
-    
-    //设置开启虚拟定位风险监测，可以根据需要开启
-    [self.locationManager setDetectRiskOfFakeLocation:NO];
 }
 
 - (void)getCurrentPosition:(CDVInvokedUrlCommand*)command
@@ -84,7 +90,6 @@
 
 - (void)init:(CDVInvokedUrlCommand*)command
 {
-    
     CDVPluginResult* pluginResult = nil;
     NSString* echo = [command.arguments objectAtIndex:0];
 
