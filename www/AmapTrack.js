@@ -1,5 +1,9 @@
 var exec = require('cordova/exec');
 
+exports.getCurrentPosition = function (arg0, success, error) {
+    exec(success, error, 'AmapTrack', 'getCurrentPosition', [arg0]);
+};
+
 exports.init = function (arg0, success, error) {
     exec(success, error, 'AmapTrack', 'init', [arg0]);
 };

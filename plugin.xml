@@ -6,12 +6,50 @@
     <clobbers target="cordova.plugins.AmapTrack"/>
   </js-module>
   <platform name="ios">
+  <preference name="API_KEY_FOR_IOS" />
     <config-file parent="/*" target="config.xml">
       <feature name="AmapTrack">
         <param name="ios-package" value="AmapTrack"/>
       </feature>
     </config-file>
+    <!-- logic -->
     <source-file src="src/ios/AmapTrack.m"/>
     <source-file src="src/ios/AmapTrack.h"/>
+
+    <!-- framework -->
+    <framework src="src/ios/libs/AMapFoundationKit.framework" custom="true" />
+    <framework src="src/ios/libs/AMapTrackKit.framework" custom="true" />
+    <framework src="src/ios/libs/AMapLocationKit.framework" custom="true" />
+
+    <!-- system framework depency-->
+    <framework src="JavaScriptCore.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="CoreTelephony.framework" />
+    <framework src="CoreLocation.framework" />
+    <framework src="GLKit.framework" />
+    <framework src="libz.tbd" />
+    <framework src="libc++.tbd" />
+    <framework src="Security.framework" />
+    <!-- amap track requires -->
+    <framework src="libsqlite3.tbd" />
+
+    <!-- ios10 以上后台定位权限申请 -->
+    <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
+        <string>需要您的定位服务，否则可能无法使用，如果您需要使用后台定位功能请选择“始终允许”。</string>
+    </config-file>
+    <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+        <string>需要您的定位服务</string>
+    </config-file>
+    <!-- ios8 - ios10 后台定位权限申请 -->
+    <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+        <string>需要您的定位服务，否则可能无法使用，如果您需要使用后台定位功能请选择“始终允许”。</string>
+    </config-file>
+
+  
+
+
+    <config-file target="*-Info.plist" parent="AMapApiKey">
+        <string>$API_KEY_FOR_IOS</string>
+    </config-file>
   </platform>
 </plugin>
