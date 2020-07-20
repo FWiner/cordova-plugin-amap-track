@@ -24,7 +24,7 @@
     [self.locationManager setPausesLocationUpdatesAutomatically:NO];
     
     //设置允许在后台定位
-    [self.locationManager setAllowsBackgroundLocationUpdates:NO];
+    [self.locationManager setAllowsBackgroundLocationUpdates:YES];
     
     //设置定位超时时间
     [self.locationManager setLocationTimeout:2];
@@ -127,5 +127,9 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)amapLocationManager:(AMapLocationManager *)manager doRequireLocationAuth:(CLLocationManager*)locationManager
+{
+    [locationManager requestAlwaysAuthorization];
+}
 
 @end
