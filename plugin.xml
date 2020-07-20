@@ -16,6 +16,12 @@
     <source-file src="src/ios/AmapTrack.m"/>
     <source-file src="src/ios/AmapTrack.h"/>
 
+    <config-file target="*-Info.plist" parent="UIBackgroundModes">
+        <array>
+            <string>location</string>
+        </array>
+    </config-file>
+
     <!-- framework -->
     <framework src="src/ios/libs/AMapFoundationKit.framework" custom="true" />
     <framework src="src/ios/libs/AMapTrackKit.framework" custom="true" />
