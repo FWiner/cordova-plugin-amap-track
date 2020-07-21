@@ -42,6 +42,24 @@
     
 }
 
+
+- (void)showMap:(CDVInvokedUrlCommand*)command
+
+{
+    [self initConfig];
+    
+    self.showMapViewController = [[ShowMapViewController alloc] init];
+    
+    self.showMapViewController.delegate = self;
+    
+    self.showMapViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+   
+    [self.viewController presentViewController:self.showMapViewController animated:YES completion:nil];
+    
+}
+
+
+
 - (void)getCurrentPosition:(CDVInvokedUrlCommand*)command
 
 {

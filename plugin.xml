@@ -15,6 +15,8 @@
     <!-- logic -->
     <source-file src="src/ios/AmapTrack.m"/>
     <source-file src="src/ios/AmapTrack.h"/>
+    <source-file src="src/ios/ShowMapViewController.m"/>
+    <source-file src="src/ios/ShowMapViewController.h"/>
 
     <config-file target="*-Info.plist" parent="UIBackgroundModes">
         <array>
@@ -26,6 +28,8 @@
     <framework src="src/ios/libs/AMapFoundationKit.framework" custom="true" />
     <framework src="src/ios/libs/AMapTrackKit.framework" custom="true" />
     <framework src="src/ios/libs/AMapLocationKit.framework" custom="true" />
+    <framework src="src/ios/libs/MAMapKit.framework" custom="true" />
+
 
     <!-- system framework depency-->
     <framework src="JavaScriptCore.framework" />

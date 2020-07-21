@@ -15,3 +15,7 @@ exports.startTrack = function (arg0, success, error) {
 exports.stopTrack = function (arg0, success, error) {
     exec(success, error, 'AmapTrack', 'stopTrack', [arg0]);
 };
+
+exports.showMap = function (arg0, success, error) {
+    exec(success, error, 'AmapTrack', 'showMap', [arg0]);
+};
