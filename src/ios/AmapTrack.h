@@ -3,7 +3,7 @@
 #import <AMapTrackKit/AMapTrackKit.h>
 #import <AMapLocationKit/AMapLocationKit.h>
 
-@interface AmapTrack : CDVPlugin {}
+@interface AmapTrack : CDVPlugin<AMapLocationManagerDelegate>
 
 @property (nonatomic, strong) AMapLocationManager *locationManager;
 
