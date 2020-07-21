@@ -18,7 +18,7 @@
 {
     if(!self.locationManager){
         self.locationManager = [[AMapLocationManager alloc] init];
-           
+          
            self.locationManager.delegate = self;
            
            //设置期望定位精度
@@ -75,8 +75,10 @@
                  if (regeocode)
                    {
                        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             regeocode.formattedAddress,@"address",
+                                             regeocode.POIName,@"poiname",
                                              regeocode.province,@"province",
-                                             regeocode.city,@"cityName",
+                                             regeocode.city,@"city",
                                              regeocode.district,@"district",
                                              @(location.coordinate.latitude),@"latitude",
                                              @(location.coordinate.longitude),@"longitude",
