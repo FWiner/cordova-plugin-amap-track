@@ -2,7 +2,7 @@
 
 cordova-pliugin-amap-track
 
-include amap lieying, getCurrentPosition,
+include amap lieying, getCurrentPosition
 
 # usage
 
