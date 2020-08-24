@@ -50,10 +50,11 @@
   <platform name="android">
     <config-file parent="/*" target="res/xml/config.xml">
       <feature name="AmapTrack">
-        <param name="android-package" value="cordova-plugin-amap-track.AmapTrack"/>
+        <param name="android-package" value="com.maycur.plugin.AmapTrack"/>
       </feature>
     </config-file>
     <config-file parent="/*" target="AndroidManifest.xml"/>
-    <source-file src="src/android/AmapTrack.java" target-dir="src/cordova-plugin-amap-track/AmapTrack"/>
+    <source-file src="src/android/AmapTrack.java" target-dir="src/com/maycur/plugin"/>
+    <source-file src="src/android/AmapTrackSingle.java" target-dir="src/com/maycur/plugin" />
   </platform>
 </plugin>
