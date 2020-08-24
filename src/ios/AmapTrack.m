@@ -2,6 +2,14 @@
 
 #import "AmapTrack.h"
 
+@interface AmapTrack ()
+
+@property (nonatomic, strong) CDVInvokedUrlCommand *trackStartCommand;
+@property (nonatomic, strong) NSString *sid;
+@property (nonatomic, strong) NSString *tid;
+@property (nonatomic, strong) NSString *trid;
+
+@end
 
 @implementation AmapTrack
 
@@ -125,16 +133,47 @@
 
 - (void)startTrack:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.trackStartCommand = command;
+    NSDictionary *paramOptions = [command.arguments objectAtIndex: 0];
+    self.sid = [[paramOptions objectForKey:@"serviceId"] stringValue];
+    self.tid = [[paramOptions objectForKey:@"terminalId"] stringValue];
+    self.trid = [[paramOptions objectForKey:@"traceId"] stringValue];
+    NSLog(@"sid:%@",self.sid);
+    
+    [self initConfig];
+    
+    // 创建service id
+    AMapTrackManagerOptions *option = [[AMapTrackManagerOptions alloc] init];
+    option.serviceID = self.sid;
+        
+    // 初始化AMapTrackManager
+     self.trackManager = [[AMapTrackManager alloc] initWithOptions:option];
+     self.trackManager.delegate = self;
+    
+    // 配置定位属性
+    [self.trackManager setAllowsBackgroundLocationUpdates:YES];
+    [self.trackManager setPausesLocationUpdatesAutomatically:NO];
+    
+    // 配置本地缓存大小（无法正常上报轨迹点时将未成功上报的轨迹点缓存在本地）
+    [self.trackManager setLocalCacheMaxSize:50];
+    
+    // 开始服务
+    AMapTrackManagerServiceOption *serviceOption = [[AMapTrackManagerServiceOption alloc] init];
+    // Terminal ID
+    serviceOption.terminalID = self.tid;
+    
+    [self.trackManager startServiceWithOptions:serviceOption];
+    
+//    CDVPluginResult* pluginResult = nil;
+//    NSString* echo = [command.arguments objectAtIndex:0];
+//
+//    if (echo != nil && [echo length] > 0) {
+//        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+//    } else {
+//        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+//    }
+//
+//    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 
@@ -148,10 +187,55 @@
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
-
+    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
+#pragma mark - AMapTrackManager Delegate
+/**
+ * @brief 设定定位信息的采集周期和上传周期，注意：上传周期必须为采集周期的整数倍
+ * @param gatherTimeInterval 定位信息的采集周期，单位秒，有效值范围[1, 60]
+ * @param packTimeInterval 定位信息的上传周期，单位秒，有效值范围[5, 3000]
+ */
+- (void)changeGatherAndPackTimeInterval:(NSInteger)gatherTimeInterval packTimeInterval:(NSInteger)packTimeInterval
+{
+    [self.trackManager changeGatherAndPackTimeInterval:5 packTimeInterval:30];
+}
 
+//service 开启结果回调
+- (void)onStartService:(AMapTrackErrorCode)errorCode {
+    if (errorCode == AMapTrackErrorOK) {
+        //开始服务成功，继续开启收集上报
+        NSLog(@"onStartService success");
+        self.trackManager.trackID = self.trid;
+
+        [self.trackManager startGatherAndPack];
+    } else {
+        //开始服务失败
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:nil];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStartCommand.callbackId];
+    }
+}
+
+//gather 开启结果回调
+- (void)onStartGatherAndPack:(AMapTrackErrorCode)errorCode {
+    if (errorCode == AMapTrackErrorOK) {
+        //开始采集成功
+        NSLog(@"track success");
+        
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStartCommand.callbackId];
+    } else {
+        //开始采集失败
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:nil];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStartCommand.callbackId];
+    }
+}
+
+- (void)onQueryTrackHistoryAndDistanceDone:(AMapTrackQueryTrackHistoryAndDistanceRequest *)request response:(AMapTrackQueryTrackHistoryAndDistanceResponse *)response{
+    
+}
+
+#pragma mark - AmapLocationManager Delegate
 - (void)amapLocationManager:(AMapLocationManager *)manager doRequireLocationAuth:(CLLocationManager*)locationManager
 {
     [locationManager requestAlwaysAuthorization];
