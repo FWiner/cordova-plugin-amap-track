@@ -64,6 +64,7 @@
             </meta-data>
             <!--在application标签中声明service组件：-->
             <service android:name="com.amap.api.location.APSService"></service>
+            <service android:name="com.amap.api.track.AMapTrackService" />
      </config-file>
 
     <config-file parent="/*" target="AndroidManifest.xml">
