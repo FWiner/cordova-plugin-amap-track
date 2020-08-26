@@ -32,7 +32,7 @@ public class AmapTrackSingle{
 
   private void initLocation(Activity activity){
     //初始化定位
-    locationClient = new AMapLocationClient(activity);
+    locationClient = new AMapLocationClient(activity.getApplicationContext());
     //设置定位参数
     locationOption = getDefaultOption();
     //设置定位参数
@@ -42,12 +42,6 @@ public class AmapTrackSingle{
   }
 
 
-  /**
-   * 默认的定位参数
-   * @since 2.8.0
-   * @author hongming.wang
-   *
-   */
   private AMapLocationClientOption getDefaultOption(){
     AMapLocationClientOption mOption = new AMapLocationClientOption();
     mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
