@@ -118,7 +118,7 @@ public class AmapTrack extends CordovaPlugin{
         Toast.makeText(cordova.getActivity(),
           "error onStartGatherCallback, status: " + status + ", msg: " + msg,
           Toast.LENGTH_LONG).show();
-        callbackContext.success("startTrck error");
+        callbackContext.error("startTrck error");
       }
     }
 
@@ -133,6 +133,7 @@ public class AmapTrack extends CordovaPlugin{
         Toast.makeText(cordova.getActivity(),
           "error onStopGatherCallback, status: " + status + ", msg: " + msg,
           Toast.LENGTH_LONG).show();
+        callbackContext.error("onStopGatherCallback error");
       }
     }
   };
@@ -185,6 +186,8 @@ public class AmapTrack extends CordovaPlugin{
           a.getCurrentPosition(cordova.getActivity(), callbackContext);
         }else{
           PermissionHelper.requestPermissions(this, 0, needPermissions);
+          
+
         }
     }
     //开始轨迹上传
@@ -214,6 +217,7 @@ public class AmapTrack extends CordovaPlugin{
         aMapTrackClient.startTrack(trackParam, onTrackListener);
       }else{
         PermissionHelper.requestPermissions(this, 0, needPermissions);
+        callbackContext.error("Permission Error");
       }
     }
 
