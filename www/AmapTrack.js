@@ -12,7 +12,7 @@ exports.init = function (arg0, success, error) {
 
 //猎鹰服务停止
 exports.stopService = function (arg0, success, error) {
-    exec(success, error, 'AmapTrack', 'stopTrack', [arg0]);
+    exec(success, error, 'AmapTrack', 'stopService', [arg0]);
 };
 
 //开始轨迹上报----必须在初始化完成后才能开始
