@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.maycur.plugin.AmapNotification;
 import com.maycur.plugin.SimpleOnTrackListener;
 
 import com.amap.api.track.AMapTrackClient;
@@ -212,10 +211,6 @@ public class AmapTrack extends CordovaPlugin{
 
       if(hasPermisssion()){
         TrackParam trackParam = new TrackParam(serviceId, terminalId);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          AmapNotification t = new AmapNotification();
-          trackParam.setNotification(t.creatBackgroundMode(cordova.getActivity().getApplicationContext(), cordova.getActivity()));
-        }
         aMapTrackClient.startTrack(trackParam, onTrackListener);
       }else{
         PermissionHelper.requestPermissions(this, 0, needPermissions);
