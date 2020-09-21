@@ -164,7 +164,7 @@
     [self.trackManager stopGaterAndPack];
 }
 
-- (void)stopTrack:(CDVInvokedUrlCommand*)command
+- (void)stopService:(CDVInvokedUrlCommand*)command
 {
     self.trackStopCommand = command;
     [self.trackManager stopService];

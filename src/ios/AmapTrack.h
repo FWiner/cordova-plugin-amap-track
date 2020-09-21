@@ -14,7 +14,7 @@
 
 - (void)init:(CDVInvokedUrlCommand*)command;
 - (void)startTrack:(CDVInvokedUrlCommand*)command;
-- (void)stopTrack:(CDVInvokedUrlCommand*)command;
+- (void)stopService:(CDVInvokedUrlCommand*)command;
 - (void)getCurrentPosition:(CDVInvokedUrlCommand*)command;
 
 - (void)showMap:(CDVInvokedUrlCommand*)command;
