@@ -1,6 +1,6 @@
-# cordova-pliugin-amap-track
+# cordova-plugin-amap-track
 
-cordova-pliugin-amap-track
+cordova-plugin-amap-track
 
 Include amap lieying, getCurrentPosition
 
