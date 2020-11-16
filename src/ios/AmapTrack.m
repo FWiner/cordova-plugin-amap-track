@@ -7,6 +7,7 @@
 @property (nonatomic, strong) CDVInvokedUrlCommand *trackInitCommand;
 @property (nonatomic, strong) CDVInvokedUrlCommand *trackStartCommand;
 @property (nonatomic, strong) CDVInvokedUrlCommand *trackStopCommand;
+@property (nonatomic, strong) CDVInvokedUrlCommand *serviceStopCommand;
 @property (nonatomic, strong) NSString *sid;
 @property (nonatomic, strong) NSString *tid;
 @property (nonatomic, strong) NSString *trid;
@@ -118,6 +119,7 @@
     }];
 }
 
+// 初始化服务
 - (void)init:(CDVInvokedUrlCommand*)command
 {
     self.trackInitCommand = command;
@@ -152,21 +154,24 @@
     [self.trackManager startServiceWithOptions:serviceOption];
 }
 
-
+// 开始打点
 - (void)startTrack:(CDVInvokedUrlCommand*)command
 {
     self.trackStartCommand = command;
     [self.trackManager startGatherAndPack];
 }
 
-- (void)pauseTrack:(CDVInvokedUrlCommand*)command
+// 暂停打点，不停止服务
+- (void)stopTrack:(CDVInvokedUrlCommand*)command
 {
+    self.trackStopCommand = command;
     [self.trackManager stopGaterAndPack];
 }
 
+// 停止服务
 - (void)stopService:(CDVInvokedUrlCommand*)command
 {
-    self.trackStopCommand = command;
+    self.serviceStopCommand = command;
     [self.trackManager stopService];
 }
 #pragma mark - AMapTrackManager Delegate
@@ -184,7 +189,7 @@
 - (void)onStartService:(AMapTrackErrorCode)errorCode {
     if (errorCode == AMapTrackErrorOK) {
         //开始服务成功，继续开启收集上报
-        NSLog(@"onStartService success");
+        NSLog(@"start trackService");
         self.trackManager.trackID = self.trid;
 
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
@@ -200,7 +205,7 @@
 - (void)onStartGatherAndPack:(AMapTrackErrorCode)errorCode {
     if (errorCode == AMapTrackErrorOK) {
         //开始采集成功
-        NSLog(@"track success");
+        NSLog(@"start track");
         
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStartCommand.callbackId];
@@ -216,20 +221,31 @@
 - (void)onStopService:(AMapTrackErrorCode)errorCode {
     if (errorCode == AMapTrackErrorOK) {
           //关闭成功
-          NSLog(@"close service success");
+          NSLog(@"stop trackService");
           
           CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
-          [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStopCommand.callbackId];
+          [self.commandDelegate sendPluginResult:pluginResult callbackId:self.serviceStopCommand.callbackId];
 
       } else {
           CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:nil];
-          [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStopCommand.callbackId];
+          [self.commandDelegate sendPluginResult:pluginResult callbackId:self.serviceStopCommand.callbackId];
       }
 }
 
 //service 关闭采集结果回调
 - (void)onStopGatherAndPack:(AMapTrackErrorCode)errorCode {
-    
+    if (errorCode == AMapTrackErrorOK) {
+         //开始采集成功
+         NSLog(@"track stop");
+         
+         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
+         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStopCommand.callbackId];
+
+     } else {
+         //开始采集失败
+         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:nil];
+         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.trackStopCommand.callbackId];
+     }
 }
 
 - (void)onQueryTrackHistoryAndDistanceDone:(AMapTrackQueryTrackHistoryAndDistanceRequest *)request response:(AMapTrackQueryTrackHistoryAndDistanceResponse *)response{
