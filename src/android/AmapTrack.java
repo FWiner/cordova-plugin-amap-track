@@ -186,9 +186,7 @@ public class AmapTrack extends CordovaPlugin{
           a.getCurrentPosition(cordova.getActivity(), callbackContext);
         }else{
           PermissionHelper.requestPermissions(this, 0, needPermissions);
-
-          PluginResult result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-          callbackContext.sendPluginResult(result);
+          callbackContext.error("Permission_Error");
         }
     }
     //开始轨迹上传
@@ -218,7 +216,7 @@ public class AmapTrack extends CordovaPlugin{
         aMapTrackClient.startTrack(trackParam, onTrackListener);
       }else{
         PermissionHelper.requestPermissions(this, 0, needPermissions);
-        callbackContext.error("Permission Error");
+        callbackContext.error("Permission_Error");
       }
     }
 
