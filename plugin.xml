@@ -6,7 +6,7 @@
     <clobbers target="cordova.plugins.AmapTrack"/>
   </js-module>
   <platform name="ios">
-    <preference name="API_KEY_FOR_IOS"/>
+    <!-- <preference name="API_KEY_FOR_IOS"/> -->
     <config-file parent="/*" target="config.xml">
       <feature name="AmapTrack">
         <param name="ios-package" value="AmapTrack"/>
