@@ -8,10 +8,10 @@ Include amap lieying, getCurrentPosition
 
 
 ### 单次定位
-
 cordova.plugins.AmapTrack.getCurrentPosition
 
-### 实时定位相关
+### 实时定位初始化
+cordova.plugins.AmapTrack.init
 
 
 # usage
